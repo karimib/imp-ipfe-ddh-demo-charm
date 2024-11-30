@@ -31,38 +31,19 @@ class SKy:
         self.key = key
 
 
-def inner_product_mod(vector1, vector2, p):
+def inner_product(a, b):
     """
-    Computes the inner product (dot product) of two vectors modulo p.
-
+    Calculates inner product of group element vector and integer vector
     Args:
-        vector1 (list[int or float]): The first vector.
-        vector2 (list[int or float]): The second vector.
-        p (int): The modulus.
+        a: group elements vector
+        b: integer vector
 
-    Returns:
-        int: The inner product of the two vectors modulo p.
+    Returns: inner product of the vectors
 
-    Raises:
-        ValueError: If the vectors are not of the same length.
     """
-    if len(vector1) != len(vector2):
-        raise ValueError("Vectors must have the same length")
+    n = len(a)
+    inner = 0
+    for i in range(n):
+        inner += a[i] * b[i]
+    return inner
 
-    # Compute the inner product modulo p
-    return sum(vector1[i] * vector2[i] for i in range(len(vector1))) % p
-
-
-def random_vector(low, high, n):
-    """
-    Generates a random vector with elements from range [a, b].
-
-    Args:
-        a (int): The lower bound (inclusive).
-        b (int): The upper bound (inclusive).
-        n (int): The size of the vector.
-
-    Returns:
-        list[int]: A vector (list) of random integers.
-    """
-    return [random.randint(low, high - 1) for _ in range(n)]

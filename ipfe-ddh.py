@@ -1,24 +1,38 @@
 import random
-from charm.toolbox.pairinggroup import PairingGroup, G1
-from ipfehelpers import random_vector, MPK, MSK, CT, inner_product_mod, SKy
-
-
-group = PairingGroup("SS512")
-g = group.random(G1)
-p = group.order()
+from charm.toolbox.integergroup import IntegerGroup
+from charm.core.math.integer import getMod, toInt
+import numpy as np
+from ipfehelpers import (
+    inner_product,
+    MPK,
+    MSK,
+    CT,
+    SKy,
+)
 
 l = 5
+sec_bits = 512
+
+group = IntegerGroup()
+group.paramgen(sec_bits)
+g = group.randomGen()
+p = int(getMod(g))
+
+
+def random_vector(l, p):
+    vector = [group.random() % p for _ in range(l)]
+    return [int(toInt(vector[i])) for i in range(l)]
 
 
 def setup(l):
-    s = random_vector(0, p, l)
+    s = random_vector(l, p)
     h = [g ** s[i] for i in range(l)]
 
     return MPK(h), MSK(s)
 
 
 def encrypt(mpk, x):
-    r = random.randint(0, p)
+    r = group.random()
     c = []
     c.append(g**r)
     for i in range(l):
@@ -28,42 +42,28 @@ def encrypt(mpk, x):
 
 
 def keyder(msk, y):
-    return SKy(inner_product_mod(y, msk.s, p))
+    return SKy(inner_product(msk.s, y))
 
 
 def decrypt(mpk, ct, sk, y):
-    res = 1
-    for i in range(l):
-        res *= ct.cti[i] ** y[i]
-
-    divisor = ct.ct0**sk.key
-    res /= divisor
+    res = np.prod([ct.cti[i] ** y[i] for i in range(l)])
+    res /= ct.ct0**sk.key
 
     return res
 
 
-def find_dlog(g, h):
-    for i in range(1, p):
-        if g**i == h:
-            return i
-
-    return -1
-
 
 def main():
     mpk, msk = setup(l)
-    x = random_vector(0, p, l)
+    x = random_vector(l, p)
     ct = encrypt(mpk, x)
-    y = random_vector(0, p, l)
+    y = random_vector(l, p)
     sk = keyder(msk, y)
     res = decrypt(mpk, ct, sk, y)
-    # This is computationally expensive
-    #val = find_dlog(g, res)
 
-    expected = inner_product_mod(x, y, p)
+    expected = inner_product(x, y)
     print("<x,y> ", expected)
     print("g^<x,y>: ", g**expected)
-    #print("Dlog result: ", val)
     print("Decrypted result: ", res)
 
 
