@@ -42,6 +42,14 @@ def decrypt(mpk, ct, sk, y):
     return res
 
 
+def find_dlog(g, h):
+    for i in range(1, p):
+        if g**i == h:
+            return i
+
+    return -1
+
+
 def main():
     mpk, msk = setup(l)
     x = random_vector(0, p, l)
@@ -49,10 +57,13 @@ def main():
     y = random_vector(0, p, l)
     sk = keyder(msk, y)
     res = decrypt(mpk, ct, sk, y)
+    # This is computationally expensive
+    val = find_dlog(g, res)
 
     expected = inner_product_mod(x, y, p)
     print("<x,y> ", expected)
     print("g^<x,y>: ", g**expected)
+    print("Dlog result: ", val)
     print("Decrypted result: ", res)
 
 
