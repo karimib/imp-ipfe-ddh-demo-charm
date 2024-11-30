@@ -1,8 +1,6 @@
 from charm.toolbox.integergroup import IntegerGroup
 from charm.core.math.integer import getMod, toInt
-import numpy as np
 from ipfehelpers import (
-    inner_product,
     MPK,
     MSK,
     CT,
@@ -39,11 +37,16 @@ def encrypt(mpk, x):
 
 
 def keyder(msk, y):
-    return SKy(inner_product(msk.s, y))
+    inner = sum(y[i] * msk.s[i] for i in range(l))
+    return SKy(inner)
 
 
 def decrypt(mpk, ct, sk, y):
-    res = np.prod([ct.cti[i] ** y[i] for i in range(l)])
+    tmp = [int(toInt(ct.cti[i] ** y[i])) for i in range(l)]
+    res = 1
+    for i in range(l):
+        res *= tmp[i]
+        
     res /= ct.ct0**sk.key
 
     return res
@@ -58,7 +61,7 @@ def main():
     sk = keyder(msk, y)
     res = decrypt(mpk, ct, sk, y)
 
-    expected = inner_product(x, y)
+    expected = sum(x[i] * y[i] for i in range(l))
     print("<x,y> ", expected)
     print("g^<x,y>: ", g**expected)
     print("Decrypted result: ", res)

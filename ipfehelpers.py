@@ -1,6 +1,3 @@
-import random
-
-
 class MPK:
     h = None
 
@@ -29,21 +26,3 @@ class SKy:
 
     def __init__(self, key):
         self.key = key
-
-
-def inner_product(a, b):
-    """
-    Calculates inner product of group element vector and integer vector
-    Args:
-        a: group elements vector
-        b: integer vector
-
-    Returns: inner product of the vectors
-
-    """
-    n = len(a)
-    inner = 0
-    for i in range(n):
-        inner += a[i] * b[i]
-    return inner
-
