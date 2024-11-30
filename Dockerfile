@@ -7,15 +7,6 @@ COPY ./ext /charm
 RUN cd /charm && ./configure.sh && make && make install && ldconfig
 
 
-#FROM base AS testing 
-# Helper class 
-#COPY ./ipfehelpers.py .
-# Test class
-#COPY ./test_qfehelpers.py .
-# Run the tests
-#RUN python3 test_qfehelpers.py
-
-#FROM testing AS final 
 FROM base AS final
 COPY ./ipfehelpers.py .
 COPY ./ipfe-ddh.py .
