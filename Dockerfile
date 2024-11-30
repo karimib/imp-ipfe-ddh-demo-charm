@@ -9,5 +9,7 @@ RUN cd /charm && ./configure.sh && make && make install && ldconfig
 
 FROM base AS final
 COPY ./ipfehelpers.py .
-COPY ./ipfe-ddh.py .
-CMD ["python3", "ipfe-ddh.py"]
+COPY ./ipfeddh.py .
+COPY ./benchmark.py .
+#CMD ["python3", "ipfeddh.py"]
+CMD ["python3", "benchmark.py"]
