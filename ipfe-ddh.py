@@ -58,12 +58,12 @@ def main():
     sk = keyder(msk, y)
     res = decrypt(mpk, ct, sk, y)
     # This is computationally expensive
-    val = find_dlog(g, res)
+    #val = find_dlog(g, res)
 
     expected = inner_product_mod(x, y, p)
     print("<x,y> ", expected)
     print("g^<x,y>: ", g**expected)
-    print("Dlog result: ", val)
+    #print("Dlog result: ", val)
     print("Decrypted result: ", res)
 
 
