@@ -1,4 +1,3 @@
-import random
 from charm.toolbox.integergroup import IntegerGroup
 from charm.core.math.integer import getMod, toInt
 import numpy as np
@@ -32,13 +31,11 @@ def setup(l):
 
 
 def encrypt(mpk, x):
-    r = group.random()
-    c = []
-    c.append(g**r)
-    for i in range(l):
-        c.append((mpk.h[i] ** r) * (g ** x[i]))
+    r = int(toInt(group.random()))
+    c0 = g ** r
+    ci = [(mpk.h[i] ** r) * (g ** x[i]) for i in range(l)]
 
-    return CT(c[0], c[1:])
+    return CT(c0, ci)
 
 
 def keyder(msk, y):
