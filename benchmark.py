@@ -7,7 +7,7 @@ from ipfeddh import IPFEDDH
 ## Tests 
 def simulate_increasing_bits():
     results = []
-    stages = [512, 1024, 2048]
+    stages = [512, 1024, 1536, 2048]
     l = 100
     for bits in stages:
         G = IPFEDDH(bits)
@@ -50,7 +50,7 @@ def simulate_increasing_bits():
 def simulate_increasing_length():
     results = []
     bits = 512
-    length = [100, 1000, 10000]
+    length = [100, 500, 1000, 5000, 10000, 100000]
     G = IPFEDDH(bits)
     
     for l in length:
