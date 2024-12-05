@@ -2,14 +2,13 @@ import time
 import csv
 from ipfeddh import IPFEDDH
 
-l = 5
-
-stages = [512, 1024]
 
 
 ## Tests 
-def simulate():
+def simulate_increasing_bits():
     results = []
+    stages = [512, 1024, 2048]
+    l = 100
     for bits in stages:
         G = IPFEDDH(bits)
 
@@ -48,7 +47,7 @@ def simulate():
         csvwriter.writerows(results)
 
 
-def simulate_increasing_l():
+def simulate_increasing_length():
     results = []
     bits = 512
     length = [100, 1000, 10000]
@@ -84,10 +83,11 @@ def simulate_increasing_l():
 
         results.append([bits, l, setup_time, encrypt_time, keyder_time, decrypt_time, total_time])
 
-    with open('data/ipfe-ddh_timings_increasing_l_bits_512.csv', 'w', newline='') as csvfile:
+    with open('data/ipfe-ddh_timings_increasing_length.csv', 'w', newline='') as csvfile:
         csvwriter = csv.writer(csvfile)
         csvwriter.writerow(['bits', 'l', 'time setup', 'time encrypt', 'time keyder', 'time decrypt', 'time total'])
         csvwriter.writerows(results)
 
 
-simulate_increasing_l()
+simulate_increasing_bits()
+simulate_increasing_length()
