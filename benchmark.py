@@ -2,6 +2,22 @@ import time
 import csv
 from ipfeddh import IPFEDDH
 
+def implementation_check():
+    bits = 512
+    l = 3
+    G = IPFEDDH(bits)
+    x = G.random_vector(l, G.p)
+    y = G.random_vector(l, G.p)
+
+    mp, msk = G.setup(l)
+    ct = G.encrypt(mp, x, l)
+    sk = G.keyder(msk, y, l)
+    v = G.decrypt(mp, ct, sk, y, l)
+
+    expected = G.get_expected_result(x, y, l)
+
+    print("calculated result: ", v)
+    print("expected result: ", expected)
 
 
 ## Tests 
@@ -88,6 +104,6 @@ def simulate_increasing_length():
         csvwriter.writerow(['bits', 'l', 'time setup', 'time encrypt', 'time keyder', 'time decrypt', 'time total'])
         csvwriter.writerows(results)
 
-
-simulate_increasing_bits()
-simulate_increasing_length()
+implementation_check()
+#simulate_increasing_bits()
+#simulate_increasing_length()

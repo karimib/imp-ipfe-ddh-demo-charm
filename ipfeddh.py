@@ -50,3 +50,6 @@ class IPFEDDH:
         res /= ct.ct0**sk.key
 
         return res
+    
+    def get_expected_result(self, x, y, l):
+        return self.g ** (sum([x[i] * y[i] for i in range(l)])) % self.p

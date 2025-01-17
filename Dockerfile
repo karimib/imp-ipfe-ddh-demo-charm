@@ -16,5 +16,4 @@ FROM base AS final
 COPY ./ipfehelpers.py .
 COPY ./ipfeddh.py .
 COPY ./benchmark.py .
-#CMD ["python3", "ipfeddh.py"]
 CMD ["python3", "benchmark.py"]
