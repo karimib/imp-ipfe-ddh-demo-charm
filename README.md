@@ -8,8 +8,8 @@ The following project implements the Inner Product Functional Encryption Scheme 
 
 ## Structure
 
-* [ipfeddh.py](./qfebounded.py) contains the implementation of the scheme
-* [ipfehelpers.py](./qfehelpers.py) helper functions used by the scheme
+* [ipfeddh.py](./ipfeddh.py) contains the implementation of the scheme
+* [ipfehelpers.py](./ipfehelpers.py) helper functions used by the scheme
 * [benchmark.py](./benchmark.py) calls the scheme in different ways and provides benchmarks
 
 ## Prerequisites
